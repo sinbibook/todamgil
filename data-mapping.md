@@ -542,7 +542,7 @@ and we hope to see you again.
 | ----------- | --------------- |
 | `hero`      | `.main_visual`  |
 | `essence`   | `.main_bnr01`   |
-| `signature` | `.main_bnr02`   |
+| `signature` | `.main_bnr02` + `.vimeoWrap` 인트로 영상 (videos/mediaType 만 겸용) |
 | `gallery`   | `.main_about`   |
 | `closing`   | `.main_reserve` |
 
@@ -554,6 +554,7 @@ and we hope to see you again.
 
 | `data-*`                              | 요소                           | JSON 경로                                | 폴백                                               |
 | ------------------------------------- | ------------------------------ | ---------------------------------------- | -------------------------------------------------- |
+| `data-index-hero-video-wrap` / `-video` | `.vimeoWrap` / `video` (히어로 위 밴드) | `signature.videos[0]` | `signature.mediaType !== 'video'` 이면 `.vimeoWrap` 째 숨김 (원본 yeosumystay.com) |
 | `data-index-hero-title`               | `.visual_txt strong`           | `hero.title`                             | `customFields.property.nameEn` → `property.nameEn` |
 | `data-index-hero-description`         | `.visual_txt p`                | `hero.description`                       | **폴백 없음** — 비면 `<p>` 째 숨김                 |
 | `data-index-hero-slides`              | `.main_visual .swiper-wrapper` | `hero.images[isSelected]` (배경 `cover`) | placeholder 슬라이드 1장                           |

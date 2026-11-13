@@ -55,6 +55,20 @@
       <div id="header-wrap"></div>
 
       <div id="container">
+        <!-- ── 인트로 영상 밴드 ────────────────────────────
+             원본(yeosumystay.com)은 #content 앞, 히어로 **위**에 `<video autoplay muted playsinline>`
+             한 장을 통째로 얹는다. `.vimeoWrap` 에는 CSS 규칙이 없어서
+             `<video width="100%">` 가 그대로 문서 흐름에 놓이는 밴드다.
+             ⚠️ F/I/KIDS 와 동일하게 `signature` 블록의 videos/mediaType 을 쓴다.
+                `signature.title`/`description`/`images` 는 그대로 `.main_bnr02` 배너가 쓰므로,
+                이 밴드는 같은 블록의 videos/mediaType 서브필드만 겸용한다.
+             ⚠️ `mediaType` 이 'video' 일 때만 노출한다(image/video 택일).
+                영상 없는 숙소가 정상 상태이므로 기본은 숨김이다. -->
+        <!-- data-* : data-index-hero-video-wrap / -video (signature.videos[0], mediaType==='video') -->
+        <div class="vimeoWrap" data-index-hero-video-wrap style="display: none">
+          <video data-index-hero-video width="100%" controls autoplay muted playsinline preload="none"></video>
+        </div>
+
         <section id="content" class="main">
           <!-- 히어로 비주얼 -->
           <div class="main_visual visual">
