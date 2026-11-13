@@ -21,6 +21,7 @@
 
   IndexMapper.prototype.mapPage = function () {
     this.mapPropertyNames();
+    this.mapIntroVideo();
     this.mapHero();
     this.mapBanner('bnr01', 'essence');
     this.mapBanner('bnr02', 'signature');
@@ -39,6 +40,7 @@
   //   hero      → .main_visual   (히어로 슬라이더 + 문구)
   //   essence   → .main_bnr01    (이미지 배너 1)
   //   signature → .main_bnr02    (이미지 배너 2)
+  //               + .vimeoWrap   (인트로 영상 밴드 — videos/mediaType 만 겸용, mapIntroVideo 참고)
   //   gallery   → .main_about    (숙소 소개 + 슬라이더)
   //   closing   → .main_wide_bg  (마무리 문구 + 고정 배경)
   //
@@ -53,6 +55,29 @@
     setAllText('[data-property-name-en]', this.getPropertyNameEn());
     setAllText('[data-property-name]', this.getPropertyName());
     this.applyPropertyCaptions();
+  };
+
+  // MAPPER: signature.videos[0] → .vimeoWrap 인트로 영상 밴드 (히어로 위)
+  // mediaType 이 'video' 일 때만 연다. 영상이 없으면 .vimeoWrap 째 숨긴다 —
+  // <video> 만 비우면 브라우저가 빈 플레이어(컨트롤 바)를 그려 히어로 위에 검은 띠가 남는다.
+  // signature 의 title/description/images 는 .main_bnr02 배너가 그대로 쓴다.
+  // hero 는 영상 유무와 무관하게 히어로 슬라이더 전용으로 그대로 둔다.
+  IndexMapper.prototype.mapIntroVideo = function () {
+    var signature = this.getSection().signature || {};
+    var url =
+      signature.mediaType === 'video' ? this.getFirstSelectedImage(signature.videos || []) : '';
+
+    document.querySelectorAll('[data-index-hero-video-wrap]').forEach(function (wrap) {
+      wrap.style.display = url ? '' : 'none';
+    });
+    document.querySelectorAll('[data-index-hero-video]').forEach(function (video) {
+      if (!url) {
+        video.removeAttribute('src');
+        return;
+      }
+      // 같은 URL 을 다시 넣으면 재생이 처음으로 돌아간다 (미리보기 재매핑 시)
+      if (video.getAttribute('src') !== url) video.src = url;
+    });
   };
 
   // MAPPER: hero → .main_visual
